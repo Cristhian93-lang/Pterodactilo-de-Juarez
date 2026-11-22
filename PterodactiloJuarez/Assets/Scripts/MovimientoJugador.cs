@@ -8,6 +8,7 @@ public class MovimientoJugador : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private Vector3 movimiento;
+    private bool detenido = false;   // true cuando la partida terminó
 
     void Start()
     {
@@ -18,6 +19,8 @@ public class MovimientoJugador : MonoBehaviour
 
     void Update()
     {
+        if (detenido) return;
+
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         movimiento = new Vector3(x, 0f, z).normalized;
@@ -35,5 +38,20 @@ public class MovimientoJugador : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movimiento * velocidad * Time.fixedDeltaTime);
+    }
+
+    // Lo llama el GestorPartida al ganar: deja de moverse y vuelve a idle
+    public void Detener()
+    {
+        detenido = true;
+        movimiento = Vector3.zero;
+        if (animator != null) animator.SetFloat("velocidad", 0f);
+    }
+
+    // Lo llama el GestorPartida al perder: se detiene y reproduce la animación "die"
+    public void Atrapado()
+    {
+        Detener();
+        if (animator != null) animator.SetTrigger("atrapado");
     }
 }
