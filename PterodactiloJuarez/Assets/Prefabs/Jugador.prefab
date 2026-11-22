@@ -150,6 +150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: character-k
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 3f710cd612f3d460e8b8b4cea6e953a4, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3917f51d8f0e642fa94867ceb6273615, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
