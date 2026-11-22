@@ -367,7 +367,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 80
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -4322,6 +4322,7 @@ MonoBehaviour:
   marcaTienda: {fileID: 1688276931}
   marcaCasa: {fileID: 279410246}
   jugador: {fileID: 1664466262}
+  macheteEnMano: {fileID: 8198391726511538004}
 --- !u!82 &682316212
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5135,7 +5136,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.0001
+      repeatInterval: 0.01
       probability: 1
   SizeModule:
     enabled: 0
@@ -7653,7 +7654,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 44
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -11069,7 +11070,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 48
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -11687,6 +11688,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b7daf09e4f8e4d52a53c2f419609170, type: 3}
+--- !u!1 &8198391726511538004 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7223024876288809077, guid: 6b7daf09e4f8e4d52a53c2f419609170, type: 3}
+  m_PrefabInstance: {fileID: 8198391726511538003}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

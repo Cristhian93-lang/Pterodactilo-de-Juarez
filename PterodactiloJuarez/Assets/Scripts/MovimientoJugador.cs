@@ -37,6 +37,7 @@ public class MovimientoJugador : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (detenido) return;
         rb.MovePosition(rb.position + movimiento * velocidad * Time.fixedDeltaTime);
     }
 
@@ -53,5 +54,11 @@ public class MovimientoJugador : MonoBehaviour
     {
         Detener();
         if (animator != null) animator.SetTrigger("atrapado");
+    }
+
+    // Lo llama el GestorPartida al usar el machete: animación de golpe
+    public void Machetazo()
+    {
+        if (animator != null) animator.SetTrigger("machetazo");
     }
 }

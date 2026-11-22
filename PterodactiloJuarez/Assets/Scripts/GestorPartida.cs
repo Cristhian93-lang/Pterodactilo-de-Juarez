@@ -20,17 +20,20 @@ public class GestorPartida : MonoBehaviour
 
     [Header("Jugador")]
     public MovimientoJugador jugador;
+    public GameObject macheteEnMano;   // modelo del machete en la mano (oculto hasta la tienda)
 
     // static: sobrevive al recargar la escena, así al reiniciar no sale otra vez la pantalla de inicio
     private static bool yaEmpezo = false;
 
     private bool fueALaTienda = false;
     private bool terminada = false;
+    private bool tieneMachete = false;
     private int escondites = 0;   // en cuántos escondites está parado ahora (pueden traslaparse)
 
     public bool Escondido { get { return escondites > 0; } }
     public bool Terminada { get { return terminada; } }
     public bool Jugando { get { return yaEmpezo && !terminada; } }
+    public bool TieneMachete { get { return tieneMachete; } }
 
     void Start()
     {
@@ -40,6 +43,7 @@ public class GestorPartida : MonoBehaviour
             Time.timeScale = 0f;   // congela el juego hasta presionar Espacio
             textoMensaje.text = "PTERODÁCTILO DE JUÁREZ\n\n<size=36>Ve a la tienda y regresa a casa.\nCuando escuches el chillido, ¡escóndete bajo un árbol o una sombrilla!\n\nWASD / Flechas para moverte\n\nPresiona ESPACIO para empezar</size>";
         }
+        macheteEnMano.SetActive(false);
         ActualizarObjetivo();
     }
 
@@ -76,6 +80,8 @@ public class GestorPartida : MonoBehaviour
     {
         if (fueALaTienda || terminada) return;
         fueALaTienda = true;
+        tieneMachete = true;              // en la tienda compra un machete para el regreso
+        macheteEnMano.SetActive(true);
         ActualizarObjetivo();
     }
 
@@ -87,9 +93,24 @@ public class GestorPartida : MonoBehaviour
     void ActualizarObjetivo()
     {
         textoObjetivo.text = fueALaTienda ? "Objetivo 2/2: regresa a casa" : "Objetivo 1/2: ve a la tienda";
+        if (tieneMachete) textoObjetivo.text += "\n<size=32><color=#FFD27F>Machete: presiona ESPACIO cuando chille</color></size>";
         // La marca de partículas solo brilla sobre el objetivo actual
         if (fueALaTienda) { marcaTienda.Stop(); marcaCasa.Play(); }
         else              { marcaTienda.Play(); marcaCasa.Stop(); }
+    }
+
+    // ---- Machete (lo llama Pterodactilo.cs): un solo uso ----
+    public void UsarMachete()
+    {
+        tieneMachete = false;
+        jugador.Machetazo();
+        Invoke("GuardarMachete", 1f);   // deja ver el golpe antes de guardarlo
+        ActualizarObjetivo();
+    }
+
+    void GuardarMachete()
+    {
+        macheteEnMano.SetActive(false);
     }
 
     // ---- Final ----
@@ -109,6 +130,11 @@ public class GestorPartida : MonoBehaviour
         terminada = true;
         jugador.Atrapado();
         textoEstado.text = "";
+        Invoke("MostrarDerrota", 1.5f);   // primero se ve cómo se lo lleva volando
+    }
+
+    void MostrarDerrota()
+    {
         textoMensaje.text = "<color=#FF6B5B>¡TE ATRAPÓ!</color>\n<size=36>Te quedaste a la vista\n\nPresiona R para reintentar</size>";
     }
 

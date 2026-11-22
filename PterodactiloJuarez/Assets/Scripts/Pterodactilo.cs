@@ -24,7 +24,7 @@ public class Pterodactilo : MonoBehaviour
     public float esperaMax = 10f;
     public float duracionAviso = 2.5f;      // tiempo para esconderse después del chillido
 
-    private enum Estado { Patrulla, Aviso, Picada, Subida }
+    private enum Estado { Patrulla, Aviso, Picada, Subida, Llevar }
     private Estado estado = Estado.Patrulla;
     private float tiempo;
     private float angulo;
@@ -55,6 +55,7 @@ public class Pterodactilo : MonoBehaviour
 
             case Estado.Aviso:
                 VolarEnCirculo();
+                if (gestor.TieneMachete && Input.GetKeyDown(KeyCode.Space)) { Espantar(); break; }
                 tiempo -= Time.deltaTime;
                 if (tiempo <= 0f)
                 {
@@ -64,6 +65,7 @@ public class Pterodactilo : MonoBehaviour
                 break;
 
             case Estado.Picada:
+                if (gestor.TieneMachete && Input.GetKeyDown(KeyCode.Space)) { Espantar(); break; }
                 // Persigue la posición actual del jugador
                 Vector3 destino = jugador.position + Vector3.up;
                 Mover(destino, velocidadPicada);
@@ -71,10 +73,19 @@ public class Pterodactilo : MonoBehaviour
                 {
                     polvo.transform.position = jugador.position;
                     polvo.Play();
-                    if (gestor.Escondido) gestor.MostrarEstado();   // falló: el jugador estaba en la sombra
-                    else gestor.Perder();
-                    estado = Estado.Subida;
                     animator.SetBool("picada", false);
+                    if (gestor.Escondido)
+                    {
+                        gestor.MostrarEstado();   // falló: el jugador estaba en la sombra
+                        estado = Estado.Subida;
+                    }
+                    else
+                    {
+                        gestor.Perder();
+                        // Lo atrapa: el Rigidbody pasa a kinematic para que la física no lo jale hacia abajo
+                        jugador.GetComponent<Rigidbody>().isKinematic = true;
+                        estado = Estado.Llevar;
+                    }
                 }
                 break;
 
@@ -84,9 +95,28 @@ public class Pterodactilo : MonoBehaviour
                 {
                     estado = Estado.Patrulla;
                     tiempo = Random.Range(esperaMin, esperaMax);
+                    gestor.MostrarEstado();
                 }
                 break;
+
+            case Estado.Llevar:
+                // Se eleva y se aleja llevando al jugador colgado de las patas
+                Vector3 adelante = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(adelante + Vector3.up * 0.5f), 3f * Time.deltaTime);
+                transform.position += (Vector3.up * 6f + adelante * 5f) * Time.deltaTime;
+                jugador.position = transform.position + Vector3.down * 1.6f;
+                break;
         }
+    }
+
+    // El jugador lo espanta con el machete: cancela el ataque y vuelve a subir
+    void Espantar()
+    {
+        gestor.UsarMachete();
+        gestor.Avisar("¡Lo espantaste con el machete!");
+        animator.SetBool("picada", false);
+        chillido.Play();
+        estado = Estado.Subida;
     }
 
     // Punto del círculo alrededor del jugador, a la altura de vuelo
