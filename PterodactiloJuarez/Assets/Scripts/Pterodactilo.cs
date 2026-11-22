@@ -24,16 +24,23 @@ public class Pterodactilo : MonoBehaviour
     public float esperaMax = 10f;
     public float duracionAviso = 2.5f;      // tiempo para esconderse después del chillido
 
+    [Header("Regreso a casa (más difícil)")]
+    public float esperaRegresoMin = 4f;
+    public float esperaRegresoMax = 7f;
+    public float avisoRegreso = 1.8f;
+
     private enum Estado { Patrulla, Aviso, Picada, Subida, Llevar }
     private Estado estado = Estado.Patrulla;
     private float tiempo;
     private float angulo;
     private Animator animator;
+    private Renderer modelo;
 
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
-        tiempo = Random.Range(esperaMin, esperaMax);
+        modelo = GetComponentInChildren<Renderer>();
+        tiempo = SiguienteEspera();
         transform.position = PuntoDelCirculo();
     }
 
@@ -47,7 +54,7 @@ public class Pterodactilo : MonoBehaviour
                 if (tiempo <= 0f)
                 {
                     estado = Estado.Aviso;
-                    tiempo = duracionAviso;
+                    tiempo = gestor.EnRegreso ? avisoRegreso : duracionAviso;
                     chillido.Play();
                     gestor.Avisar("¡Chillido! ¡Escóndete!");
                 }
@@ -83,7 +90,9 @@ public class Pterodactilo : MonoBehaviour
                     {
                         gestor.Perder();
                         // Lo atrapa: el Rigidbody pasa a kinematic para que la física no lo jale hacia abajo
-                        jugador.GetComponent<Rigidbody>().isKinematic = true;
+                        Rigidbody rb = jugador.GetComponent<Rigidbody>();
+                        rb.isKinematic = true;
+                        rb.interpolation = RigidbodyInterpolation.None;   // sin interpolación para que no se quede atrás
                         estado = Estado.Llevar;
                     }
                 }
@@ -94,7 +103,7 @@ public class Pterodactilo : MonoBehaviour
                 if (Vector3.Distance(transform.position, PuntoDelCirculo()) < 1f)
                 {
                     estado = Estado.Patrulla;
-                    tiempo = Random.Range(esperaMin, esperaMax);
+                    tiempo = SiguienteEspera();
                     gestor.MostrarEstado();
                 }
                 break;
@@ -104,9 +113,18 @@ public class Pterodactilo : MonoBehaviour
                 Vector3 adelante = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(adelante + Vector3.up * 0.5f), 3f * Time.deltaTime);
                 transform.position += (Vector3.up * 6f + adelante * 5f) * Time.deltaTime;
-                jugador.position = transform.position + Vector3.down * 1.6f;
+                // Lo cuelga justo debajo del cuerpo del modelo (no del pivote, que está desplazado)
+                Bounds cuerpo = modelo.bounds;
+                jugador.position = new Vector3(cuerpo.center.x, cuerpo.center.y - 1.9f, cuerpo.center.z);
                 break;
         }
+    }
+
+    // De regreso a casa ataca más seguido
+    float SiguienteEspera()
+    {
+        if (gestor.EnRegreso) return Random.Range(esperaRegresoMin, esperaRegresoMax);
+        return Random.Range(esperaMin, esperaMax);
     }
 
     // El jugador lo espanta con el machete: cancela el ataque y vuelve a subir

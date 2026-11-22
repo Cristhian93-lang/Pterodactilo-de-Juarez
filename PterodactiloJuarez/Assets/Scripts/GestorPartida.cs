@@ -34,6 +34,7 @@ public class GestorPartida : MonoBehaviour
     public bool Terminada { get { return terminada; } }
     public bool Jugando { get { return yaEmpezo && !terminada; } }
     public bool TieneMachete { get { return tieneMachete; } }
+    public bool EnRegreso { get { return fueALaTienda; } }
 
     void Start()
     {
