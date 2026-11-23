@@ -71,6 +71,5 @@ Se usó Claude (Anthropic) como apoyo:
 - Guía paso a paso para el escenario, los prefabs, los colliders, el movimiento y la cámara.
 - Escritura de `Pterodactilo.cs`, `Escondite.cs`, `Objetivo.cs` y `OcultarSinTexto.cs`, y de los métodos `Detener`, `Atrapado` y `Machetazo` de `MovimientoJugador.cs`.
 - `GestorPartida.cs` parte de la estructura del de la clase (`Ganar`, `Perder`, `Reiniciar` con `SceneManager`); la IA le agregó la pantalla de inicio, el objetivo de dos fases, el contador de escondites, el machete y los textos de la UI.
-- Configuración de la escena desde el Editor: Animator Controllers, UI, triggers, partículas, luz y audio.
 
 El detalle está en el reporte.
