@@ -94,7 +94,7 @@ public class GestorPartida : MonoBehaviour
     void ActualizarObjetivo()
     {
         textoObjetivo.text = fueALaTienda ? "Objetivo 2/2: regresa a casa" : "Objetivo 1/2: ve a la tienda";
-        if (tieneMachete) textoObjetivo.text += "\n<size=32><color=#FFD27F>Machete: presiona ESPACIO cuando chille</color></size>";
+        if (tieneMachete) textoObjetivo.text += "\n<size=38><color=#D9A8FF>Machete: presiona ESPACIO cuando chille</color></size>";
         // La marca de partículas solo brilla sobre el objetivo actual
         if (fueALaTienda) { marcaTienda.Stop(); marcaCasa.Play(); }
         else              { marcaTienda.Play(); marcaCasa.Stop(); }

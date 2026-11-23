@@ -76,6 +76,14 @@ public class Pterodactilo : MonoBehaviour
                 // Persigue la posición actual del jugador
                 Vector3 destino = jugador.position + Vector3.up;
                 Mover(destino, velocidadPicada);
+                // Si está escondido no lo ve: se regresa antes de chocar (cambio por el playtest)
+                if (gestor.Escondido && Vector3.Distance(transform.position, destino) < 5f)
+                {
+                    animator.SetBool("picada", false);
+                    gestor.MostrarEstado();
+                    estado = Estado.Subida;
+                    break;
+                }
                 if (Vector3.Distance(transform.position, destino) < 1f)
                 {
                     polvo.transform.position = jugador.position;
