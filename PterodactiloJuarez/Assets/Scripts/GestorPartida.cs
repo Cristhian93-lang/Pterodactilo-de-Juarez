@@ -25,6 +25,14 @@ public class GestorPartida : MonoBehaviour
     // static: sobrevive al recargar la escena, así al reiniciar no sale otra vez la pantalla de inicio
     private static bool yaEmpezo = false;
 
+    // Si Unity no recarga el dominio al dar Play, el static se queda en true de la partida anterior.
+    // Esto lo regresa a false cada vez que se entra a Play, para que siempre salga la pantalla de inicio.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ReiniciarAlDarPlay()
+    {
+        yaEmpezo = false;
+    }
+
     private bool fueALaTienda = false;
     private bool terminada = false;
     private bool tieneMachete = false;
