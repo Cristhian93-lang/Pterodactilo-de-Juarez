@@ -79,6 +79,9 @@ public class Pterodactilo : MonoBehaviour
                 // Si está escondido no lo ve: se regresa antes de chocar (cambio por el playtest)
                 if (gestor.Escondido && Vector3.Distance(transform.position, destino) < 5f)
                 {
+                    // El aletazo levanta polvo en el piso, debajo de donde frenó
+                    polvo.transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+                    polvo.Play();
                     animator.SetBool("picada", false);
                     gestor.MostrarEstado();
                     estado = Estado.Subida;

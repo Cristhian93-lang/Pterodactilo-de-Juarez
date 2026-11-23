@@ -66,8 +66,9 @@ Cruza el barrio de Juárez hasta la tienda y regresa a casa sin que el pterodác
 Se usó Claude (Anthropic) como apoyo:
 
 - Conversión del pterodáctilo de `.blend` a FBX con Blender.
-- Guía paso a paso para el escenario, el movimiento y la cámara.
-- Escritura de `GestorPartida.cs`, `Pterodactilo.cs`, `Escondite.cs`, `Objetivo.cs`, `OcultarSinTexto.cs` y de los métodos `Detener`, `Atrapado` y `Machetazo` de `MovimientoJugador.cs`, revisados y explicados por el autor.
-- Scripts temporales de Editor que armaron la escena (Animator Controllers, UI, triggers, partículas, luz, audio, machete y calle larga). Se borraron del proyecto después de usarlos.
+- Guía paso a paso para el escenario, los prefabs, los colliders, el movimiento y la cámara.
+- Escritura de `Pterodactilo.cs`, `Escondite.cs`, `Objetivo.cs` y `OcultarSinTexto.cs`, y de los métodos `Detener`, `Atrapado` y `Machetazo` de `MovimientoJugador.cs`.
+- `GestorPartida.cs` parte de la estructura del de la clase (`Ganar`, `Perder`, `Reiniciar` con `SceneManager`); la IA le agregó la pantalla de inicio, el objetivo de dos fases, el contador de escondites, el machete y los textos de la UI.
+- Configuración de la escena desde el Editor: Animator Controllers, UI, triggers, partículas, luz y audio.
 
 El detalle está en el reporte.
