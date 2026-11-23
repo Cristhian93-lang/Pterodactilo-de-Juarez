@@ -29,19 +29,26 @@ public class MovimientoJugador : MonoBehaviour
         if (animator != null)
             animator.SetFloat("velocidad", movimiento.magnitude);
 
-        // Mirar hacia donde camina
-        if (movimiento.sqrMagnitude > 0.01f)
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation, Quaternion.LookRotation(movimiento), 12f * Time.deltaTime);
     }
 
     void FixedUpdate()
     {
         if (detenido) return;
         rb.MovePosition(rb.position + movimiento * velocidad * Time.fixedDeltaTime);
+
+        // Mirar hacia donde camina. Se gira con el Rigidbody (MoveRotation) y no con transform.rotation,
+        // porque con Interpolate el Rigidbody sobrescribía el giro y el personaje se quedaba de lado o de espaldas.
+        if (movimiento.sqrMagnitude > 0.01f)
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, Quaternion.LookRotation(movimiento), 12f * Time.fixedDeltaTime));
     }
 
-    // Lo llama el GestorPartida al ganar: deja de moverse y vuelve a idle
+    // Lo llama el GestorPartida al presionar Espacio en la pantalla de inicio
+    public void Activar()
+    {
+        detenido = false;
+    }
+
+    // Lo llama el GestorPartida al ganar (y en la pantalla de inicio, para que no se mueva antes de tiempo): deja de moverse y vuelve a idle
     public void Detener()
     {
         detenido = true;

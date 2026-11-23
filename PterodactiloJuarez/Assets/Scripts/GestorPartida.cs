@@ -50,6 +50,7 @@ public class GestorPartida : MonoBehaviour
         else
         {
             Time.timeScale = 0f;   // congela el juego hasta presionar Espacio
+            jugador.Detener();     // y bloquea el movimiento (el Recorder puede seguir avanzando el tiempo)
             textoMensaje.text = "PTERODÁCTILO DE JUÁREZ\n\n<size=36>Ve a la tienda y regresa a casa.\nCuando escuches el chillido, ¡escóndete bajo un árbol o una sombrilla!\n\nWASD / Flechas para moverte\n\nPresiona ESPACIO para empezar</size>";
         }
         macheteEnMano.SetActive(false);
@@ -65,6 +66,7 @@ public class GestorPartida : MonoBehaviour
     void Empezar()
     {
         Time.timeScale = 1f;
+        jugador.Activar();
         textoMensaje.text = "";
         MostrarEstado();
     }
