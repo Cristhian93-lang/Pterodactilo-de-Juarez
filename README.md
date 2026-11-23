@@ -6,6 +6,8 @@ Cruza el barrio de Juárez hasta la tienda y regresa a casa sin que el pterodác
 
 **Autor:** Cristhian Viery Maida Suarez (A01668790)
 
+**Video de una partida:** https://youtu.be/O6K3CmdSm_s
+
 ## Cómo jugar
 
 | Tecla | Acción |
